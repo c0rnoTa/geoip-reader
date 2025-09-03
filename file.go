@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/oschwald/geoip2-golang"
 	"io"
 	"os"
 	"strings"
@@ -26,7 +25,7 @@ func readFile(fileName string) ([]string, error) {
 	return strings.Split(string(content), "\n"), nil
 }
 
-func writeFile(fileName string, geoipInfo map[string]*geoip2.City) error {
+func writeFile(fileName string, geoipInfo map[string]string) error {
 	file, err := os.Create(fileName)
 	if err != nil {
 		return err
@@ -35,7 +34,7 @@ func writeFile(fileName string, geoipInfo map[string]*geoip2.City) error {
 
 	// Записываем строки в файл
 	for address, line := range geoipInfo {
-		if _, err = io.WriteString(file, fmt.Sprintf("%s;%s;%s;%s\n", address, line.Country.IsoCode, line.Country.Names["ru"], line.City.Names["ru"])); err != nil {
+		if _, err = io.WriteString(file, fmt.Sprintf("%s;%s\n", address, line)); err != nil {
 			return err
 		}
 	}
