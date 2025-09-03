@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
 )
@@ -12,11 +13,20 @@ const (
 )
 
 func main() {
-	addresses, err := readFile(addressesFileName)
+
+	// Определяем флаги
+	geoDb := flag.String("d", geoIpDBFileName, "MMDB database file")
+	addressesFile := flag.String("i", addressesFileName, "Input addresses file")
+	resultsFile := flag.String("o", resultsFileName, "Output results file")
+
+	// Парсим аргументы
+	flag.Parse()
+
+	addresses, err := readFile(*addressesFile)
 	if err != nil {
 		log.Fatal(err)
 	}
-	results := geoip(geoIpDBFileName, addresses)
+	results := geoip(*geoDb, addresses)
 
 	if len(results) == 0 {
 		log.Println("No results found")
@@ -27,7 +37,7 @@ func main() {
 		log.Printf("Expected %d results, got %d\n", len(addresses), len(results))
 	}
 
-	if err = writeFile(resultsFileName, results); err != nil {
+	if err = writeFile(*resultsFile, results); err != nil {
 		log.Fatal(err)
 	}
 	log.Println("Done")
