@@ -6,6 +6,12 @@ import (
 	"os"
 )
 
+var (
+	Version   = "master"
+	BuildTime = "unknown"
+	Commit    = "unknown"
+)
+
 const (
 	geoIpDBFileName   = "GeoLite2-City.mmdb"
 	addressesFileName = "addresses.txt"
@@ -13,6 +19,8 @@ const (
 )
 
 func main() {
+
+	log.Printf("GeoIP reader version: %s (%s build at %s)", Version, Commit, BuildTime)
 
 	// Определяем флаги
 	geoDb := flag.String("d", geoIpDBFileName, "MMDB database file")

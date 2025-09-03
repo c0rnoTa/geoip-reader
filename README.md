@@ -1,4 +1,4 @@
-# Check IP address list in GeoIP
+# Check IP addresses list in GeoIP database
 
 ## Args
 
